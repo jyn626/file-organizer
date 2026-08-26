@@ -1,5 +1,21 @@
 ﻿namespace fileproj
 {
+  class FileManager
+  {
+    private static List<string> Files = new List<string>();
+
+    public static void StoreFile(string fileName)
+    {
+      Files.Add(fileName);
+    }
+
+    public static int TotalFilesFound()
+    {
+      return Files.Count;
+    }
+
+  }
+
   class Program
   {
     static void Main(String[] args)
@@ -26,6 +42,18 @@
       }
 
       Console.WriteLine("-  Folder found. Ready to scan.");
+
+
+      // Get a list of files inside the messy folder (files only)
+      string[] files = Directory.GetFiles(folderPath);
+
+      // store every file name in the list
+      foreach (string file in files)
+      {
+        FileManager.StoreFile(Path.GetFileName(file));
+      }
+
+      Console.WriteLine($"Total files found: {FileManager.TotalFilesFound()}");
 
     }
   }
