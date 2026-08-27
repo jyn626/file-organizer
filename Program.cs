@@ -3,6 +3,9 @@
   class FileManager
   {
     private static List<string> Files = new List<string>();
+
+    // `root` is our source folder
+    public static string root = "";
     private static Dictionary<string, string> CategoryDict = new Dictionary<string, string>{
       { ".jfif", "Image"},
       { ".pdf", "Documents"},
@@ -11,6 +14,30 @@
     public static void StoreFile(string fileName)
     {
       Files.Add(fileName);
+    }
+
+    // <params name="categoryFolderPath">Destination file, move the file here.</params>
+    public static void StoreToCategoryFolder(string file, string categoryFolderPath)
+    {
+      try
+      {
+        Console.WriteLine($"Category Folder Path: {categoryFolderPath}");
+        if (!Directory.Exists(categoryFolderPath))
+        {
+          Directory.CreateDirectory(categoryFolderPath);
+          Console.WriteLine($"{categoryFolderPath} created.");
+        }
+
+        File.Move(file, categoryFolderPath, overwrite: true);
+      }
+      catch (UnauthorizedAccessException e)
+      {
+        Console.WriteLine("Error: You do not have permission to create folders or file here.");
+      }
+      catch (Exception ex)
+      {
+        Console.WriteLine($"An error occurred: {ex.Message}");
+      }
     }
 
     public static int TotalFilesFound()
@@ -65,7 +92,7 @@
       }
 
       folderPath = folderPath.Trim();
-
+      FileManager.root = folderPath;
       Console.WriteLine($"Folder path to organize: {folderPath}");
 
       // TODO: maybe start the program again instead of returning and ending the program?
@@ -91,10 +118,15 @@
         // Print: file name → extension 
         Console.WriteLine($"{fileName} -> {ext}");
         Console.WriteLine($"Category: {FileManager.GetCategory(ext)}");
+
+        FileManager.StoreToCategoryFolder(file, $"{folderPath}/{FileManager.GetCategory(ext)}");
       }
 
       Console.WriteLine($"Total files found: {FileManager.TotalFilesFound()}");
 
     }
+
+
+
   }
 }
