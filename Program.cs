@@ -3,6 +3,10 @@
   class FileManager
   {
     private static List<string> Files = new List<string>();
+    private static Dictionary<string, string> CategoryDict = new Dictionary<string, string>{
+      { ".jfif", "Image"},
+      { ".pdf", "Documents"},
+    };
 
     public static void StoreFile(string fileName)
     {
@@ -32,6 +36,16 @@
       }
 
       return exts;
+    }
+
+    // <summary>
+    // Gets the category of the file base on its extension, Image, Documents, Music, etc...
+    // </summary>
+    // <params name="ext">the extension of the given file.</params>
+    // <returns>The category of the file from the dictionary, if not found then default to `Others`.</returns>
+    public static string GetCategory(string ext)
+    {
+      return CategoryDict.TryGetValue(ext.ToLower(), out string? category) ? category : "Others";
     }
 
   }
@@ -76,6 +90,7 @@
 
         // Print: file name → extension 
         Console.WriteLine($"{fileName} -> {ext}");
+        Console.WriteLine($"Category: {FileManager.GetCategory(ext)}");
       }
 
       Console.WriteLine($"Total files found: {FileManager.TotalFilesFound()}");
