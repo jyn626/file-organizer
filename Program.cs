@@ -20,6 +20,9 @@ namespace fileproj
       Files.Add(fileName);
     }
 
+    // <summary>
+    // Move the file into the chosen category folder.
+    // </summary>
     // <params name="categoryFolderPath">Destination file, move the file here.</params>
     public static void StoreToCategoryFolder(string file, string categoryFolderPath)
     {
