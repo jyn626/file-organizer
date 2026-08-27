@@ -1,4 +1,6 @@
-﻿namespace fileproj
+﻿using System.Security.AccessControl;
+
+namespace fileproj
 {
   class FileManager
   {
@@ -28,7 +30,28 @@
           Console.WriteLine($"{categoryFolderPath} created.");
         }
 
-        File.Move(file, categoryFolderPath, overwrite: true);
+        // -  Modify folder access control
+        // Get the current security/ACL settings
+        DirectoryInfo dInfo = new DirectoryInfo(categoryFolderPath);
+        DirectorySecurity dSecurity = dInfo.GetAccessControl();
+
+        // Define the new access rule (Read & Write permissions in this case)
+        FileSystemAccessRule accessRule = new FileSystemAccessRule(
+          "Everyone",
+          FileSystemRights.Read | FileSystemRights.Write,
+          InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit,
+          PropagationFlags.None,
+          AccessControlType.Allow
+        );
+
+        // Add the rule to the existing security object
+        dSecurity.AddAccessRule(accessRule);
+        // Commit the security changes back to the folder
+        dInfo.SetAccessControl(dSecurity);
+
+        string destination = Path.Combine(categoryFolderPath, Path.GetFileName(file));
+
+        File.Move(file, destination, overwrite: true);
       }
       catch (UnauthorizedAccessException e)
       {
