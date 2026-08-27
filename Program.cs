@@ -8,6 +8,8 @@ namespace fileproj
 
     // `root` is our source folder
     public static string root = "";
+
+    // TODO: add more extension categories
     private static Dictionary<string, string> CategoryDict = new Dictionary<string, string>{
       { ".jfif", "Image"},
       { ".pdf", "Documents"},
@@ -148,8 +150,5 @@ namespace fileproj
       Console.WriteLine($"Total files found: {FileManager.TotalFilesFound()}");
 
     }
-
-
-
   }
 }
