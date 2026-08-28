@@ -31,7 +31,8 @@ namespace fileproj
       // Console.WriteLine($"remaining files: {files.Length}");
 
       // if files array is empty and not NULL
-      if (files is [])
+      // if (files is [])
+      if (files.Length == 0)
       {
         Console.WriteLine("All files are moved successfully.");
       }
@@ -40,8 +41,52 @@ namespace fileproj
         // TODO: implement a better solution in cases where a file isn't moved.
         Console.WriteLine("Some files failed to be moved.");
       }
-
     }
+
+    public static void ConfirmFilesMovedToCategory()
+    {
+      List<string> exts = GetExtensions();
+      // List<string> categories = new List<string>();
+      List<string> categories = new List<string>(CategoryDict.Values);
+
+      Console.WriteLine(exts);
+
+      // foreach (string ext in exts)
+      // {
+      //   Console.WriteLine(ext);
+      //   if (!String.IsNullOrEmpty(ext))
+      //   {
+      //     categories.Add(GetCategory(ext));
+      //   }
+      // }
+
+      foreach (string cat in categories)
+      {
+        string path = $"{root}/{cat}";
+        // Console.WriteLine(cat);
+
+        var files = Directory.GetFiles(path);
+
+        foreach (string f in files)
+        {
+          string filename = Path.GetFileName(f);
+          Console.WriteLine($"{filename} -> {cat}");
+        }
+
+      }
+
+      // string[] files = Directory.GetFiles(categoryFolderPath);
+
+      // if (files.Length == 0) { Console.WriteLine($"{category} is empty"); }
+      // else
+      // {
+      //   foreach (string file in files)
+      //   {
+      //     Console.WriteLine($"{file} found in {category}");
+      //   }
+      // }
+    }
+
 
     // <summary>
     // Move the file into the chosen category folder.
@@ -174,7 +219,16 @@ namespace fileproj
       }
 
       Console.WriteLine($"Total files found: {FileManager.TotalFilesFound()}");
+
+      // Confirm the file no longer exists in the messy folder root
       FileManager.ConfirmFilesMoved();
+
+
+      // Confirm the file exists inside the category folder
+      // ConfirmFilesMovedToCategory(string category, string categoryFolderPath)
+      FileManager.ConfirmFilesMovedToCategory();
+
+
     }
   }
 }
