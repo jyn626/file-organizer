@@ -20,6 +20,29 @@ namespace fileproj
       Files.Add(fileName);
     }
 
+    public static void ConfirmFilesMoved()
+    {
+      string[] files = Directory.GetFiles(root);
+
+      // foreach (string file in files)
+      // {
+      //   Console.WriteLine("remaining files: ", files);
+      // }
+      // Console.WriteLine($"remaining files: {files.Length}");
+
+      // if files array is empty and not NULL
+      if (files is [])
+      {
+        Console.WriteLine("All files are moved successfully.");
+      }
+      else
+      {
+        // TODO: implement a better solution in cases where a file isn't moved.
+        Console.WriteLine("Some files failed to be moved.");
+      }
+
+    }
+
     // <summary>
     // Move the file into the chosen category folder.
     // </summary>
@@ -151,7 +174,7 @@ namespace fileproj
       }
 
       Console.WriteLine($"Total files found: {FileManager.TotalFilesFound()}");
-
+      FileManager.ConfirmFilesMoved();
     }
   }
 }
