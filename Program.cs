@@ -20,7 +20,7 @@ namespace fileproj
       Files.Add(fileName);
     }
 
-    public static void ConfirmFilesMoved()
+    public static void LogFilesMoved()
     {
       string[] files = Directory.GetFiles(root);
 
@@ -43,7 +43,7 @@ namespace fileproj
       }
     }
 
-    public static void ConfirmFilesMovedToCategory()
+    public static void LogFilesMovedToCategory()
     {
       List<string> exts = GetExtensions();
       // List<string> categories = new List<string>();
@@ -221,12 +221,12 @@ namespace fileproj
       Console.WriteLine($"Total files found: {FileManager.TotalFilesFound()}");
 
       // Confirm the file no longer exists in the messy folder root
-      FileManager.ConfirmFilesMoved();
+      FileManager.LogFilesMoved();
 
 
       // Confirm the file exists inside the category folder
       // ConfirmFilesMovedToCategory(string category, string categoryFolderPath)
-      FileManager.ConfirmFilesMovedToCategory();
+      FileManager.LogFilesMovedToCategory();
 
 
     }
