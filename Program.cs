@@ -15,7 +15,7 @@ namespace fileproj
       { ".pdf", "Documents"},
     };
 
-    public static void StoreFile(string fileName)
+    public static void AddFile(string fileName)
     {
       Files.Add(fileName);
     }
@@ -48,8 +48,6 @@ namespace fileproj
       List<string> exts = GetExtensions();
       // List<string> categories = new List<string>();
       List<string> categories = new List<string>(CategoryDict.Values);
-
-      Console.WriteLine(exts);
 
       // foreach (string ext in exts)
       // {
@@ -209,7 +207,7 @@ namespace fileproj
       {
         string fileName = Path.GetFileName(file);
         string ext = Path.GetExtension(file);
-        FileManager.StoreFile(fileName);
+        FileManager.AddFile(fileName);
 
         // Print: file name → extension 
         Console.WriteLine($"{fileName} -> {ext}");
