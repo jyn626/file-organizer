@@ -1,4 +1,5 @@
-﻿using System.Security.AccessControl;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Security.AccessControl;
 
 namespace fileproj
 {
@@ -43,6 +44,7 @@ namespace fileproj
       }
     }
 
+    // !  TODO: only log newly added files
     public static void LogFilesMovedToCategory()
     {
       List<string> exts = GetExtensions();
@@ -120,7 +122,54 @@ namespace fileproj
         // Commit the security changes back to the folder
         dInfo.SetAccessControl(dSecurity);
 
-        string destination = Path.Combine(categoryFolderPath, Path.GetFileName(file));
+
+        // HANDLE DUPLICATES
+        // TODO: refactor... :)
+
+        string tempDest = Path.Combine(categoryFolderPath, Path.GetFileName(file));
+        string destination = "";
+        int fileCount = 0;
+
+        // first check if the first dest (tempDest) Exists
+        // check also the destination, if its not empty and the file exists
+        // if it did, then create a new name (destination), increase the fileCount
+        // iterate again,
+
+        while (true)
+        {
+          // 2nd iteration ->
+          // destination -> `name (1)`
+          Console.WriteLine(destination);
+          if (
+            // tempDest -> `name`
+            !File.Exists(tempDest)
+            )
+          {
+            if (
+              // `name (1)` is empty ? false
+              // `name (1)` exists ? false
+              !String.IsNullOrEmpty(destination) &&
+              !File.Exists(destination)
+            )
+            {
+              // update destination, then break
+              Console.WriteLine($"No duplicate {tempDest}");
+              // destination = tempDest;
+              break;
+            }
+          }
+
+          // after completing the conditions,
+          // create a new destination and increase file count.
+          fileCount++;
+
+          // get name
+          string fname = Path.GetFileNameWithoutExtension(file);
+          string ext = Path.GetExtension(file);
+
+          destination = Path.Combine(categoryFolderPath, $"{fname} ({fileCount}){ext}");
+          tempDest = "";
+        }
 
         File.Move(file, destination, overwrite: true);
       }
